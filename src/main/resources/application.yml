@@ -1,0 +1,29 @@
+server:
+  port: ${PORT:8082}
+spring:
+  jackson:
+    time-zone: UTC
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/user_service
+    username: postgres
+    password: password
+  jpa:
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      generate-ddl: true
+journal:
+  name: user-service.journal
+auth:
+  username: ${USER_SERVICE_USERNAME:user_service}
+  password: ${USER_SERVICE_PASSWORD:$2y$12$Sr9Zsb.eVzosnkwtOMDfjOVM6YqgPSk/6mpOrbaFXBDExiSVxZlmm} # password
+  roles: ADMIN
