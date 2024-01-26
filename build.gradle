@@ -4,8 +4,17 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'ke.co.nectar.config'
-version = '0.0.1-SNAPSHOT'
+bootRun {
+	jvmArgs(["--add-opens=java.base/java.lang=ALL-UNNAMED",
+			 "--add-opens=java.base/java.io=ALL-UNNAMED",
+			 "--add-opens=java.base/java.util=ALL-UNNAMED",
+			 "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+			 "--add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"
+	])
+}
+
+group = 'ke.co.nectar.user'
+version = '3.0.0-alpha'
 
 java {
 	sourceCompatibility = '17'
@@ -34,4 +43,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.withType(Test).configureEach {
+	jvmArgs(["--add-opens=java.base/java.lang=ALL-UNNAMED",
+			 "--add-opens=java.base/java.io=ALL-UNNAMED",
+			 "--add-opens=java.base/java.util=ALL-UNNAMED",
+			 "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+			 "--add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"])
 }
