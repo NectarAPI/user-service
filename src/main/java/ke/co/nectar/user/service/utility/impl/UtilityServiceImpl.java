@@ -55,6 +55,7 @@ public class UtilityServiceImpl implements UtilityService {
                         String addedUtilityRef = AppUtils.generateRef();
                         utility.setRef(addedUtilityRef);
                         utility.setCreatedAt(Instant.now());
+                        utility.setUpdatedAt(Instant.now());
                         utilityRepository.save(utility);
                         setUserUtility(utility, userRef);
                         return utility;
@@ -125,15 +126,6 @@ public class UtilityServiceImpl implements UtilityService {
         Utility utility = utilityRepository.findByRef(ref);
         if (utility != null) {
             return utility.getMeters();
-        }
-        throw new InvalidUtilityRefException(StringConstants.INVALID_UTILITY_REF);
-    }
-
-    @Override
-    public List<Subscriber> getSubscribers(String utilityRef) throws Exception {
-        Utility utility = utilityRepository.findByRef(utilityRef);
-        if (utility != null) {
-            return utility.getSubscribers();
         }
         throw new InvalidUtilityRefException(StringConstants.INVALID_UTILITY_REF);
     }

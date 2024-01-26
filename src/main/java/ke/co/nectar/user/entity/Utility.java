@@ -32,12 +32,6 @@ public class Utility {
     private String configRef;
 
     @OneToMany
-    @JoinTable(name = "subscriber_utilities",
-            joinColumns = @JoinColumn(name = "utility_id"),
-            inverseJoinColumns = @JoinColumn(name = "subscriber_id"))
-    private List<Subscriber> subscribers = new ArrayList<>();
-
-    @OneToMany
     @JoinTable(name = "utility_meters",
             joinColumns = @JoinColumn(name = "utility_id"),
             inverseJoinColumns = @JoinColumn(name = "meter_id"))
@@ -62,12 +56,11 @@ public class Utility {
     }
 
     public Utility(Long id, String name, String ref, String contactPhoneNo, Double unitCharge,
-                   Boolean activated, String configRef, List<Subscriber> subscribers,
-                   List<Meter> meters, Instant createdAt, Instant updatedAt) {
+                   Boolean activated, String configRef, List<Meter> meters,
+                   Instant createdAt, Instant updatedAt) {
         this(name, ref, contactPhoneNo, unitCharge, activated, configRef);
         setId(id);
         setMeters(meters);
-        setSubscribers(subscribers);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
     }
@@ -78,6 +71,11 @@ public class Utility {
         setId(id);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
     }
 
     public Long getId() {
@@ -142,14 +140,6 @@ public class Utility {
 
     public void setMeters(List<Meter> meters) {
         this.meters = meters;
-    }
-
-    public List<Subscriber> getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(List<Subscriber> subscribers) {
-        this.subscribers = subscribers;
     }
 
     public Instant getCreatedAt() {

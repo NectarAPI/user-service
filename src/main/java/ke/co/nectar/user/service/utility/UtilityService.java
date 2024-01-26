@@ -7,7 +7,7 @@ import ke.co.nectar.user.entity.Utility;
 
 import java.util.List;
 
-public interface UtilityService {
+public interface  UtilityService {
 
     Utility add(Utility utility, String utilityRef) throws Exception;
 
@@ -24,8 +24,6 @@ public interface UtilityService {
     boolean activateUtility(String ref, String userRef) throws Exception;
 
     List<UserUtility> getUserUtility(String userRef) throws Exception;
-
-    List<Subscriber> getSubscribers(String utilityRef) throws Exception;
 
     List<Meter> getMeters(String ref) throws Exception;
 

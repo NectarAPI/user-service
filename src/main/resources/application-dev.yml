@@ -1,0 +1,26 @@
+server:
+  port: 8082
+spring:
+  jackson:
+    time-zone: UTC
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/user_service
+    username: user_service
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      generate-ddl: true
+hibernate:
+  show_sql: true
+  format_sql: true
+journal:
+  name: user-service.journal

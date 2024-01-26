@@ -104,6 +104,11 @@ public class User extends DateAudit {
         setUpdatedAt(updatedAt);
     }
 
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
+    }
+
     public Long getId() {
         return id;
     }

@@ -90,9 +90,9 @@ public class UsersController {
                 Map<String, Object> output = new LinkedHashMap<>();
                 output.put("user", user);
                 apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
-                        StringConstants.SUCCESS_USER_DETAILS,
-                        requestId,
-                        output);
+                                    StringConstants.SUCCESS_USER_DETAILS,
+                                    requestId,
+                                    output);
             } else {
                 apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
                         StringConstants.EMPTY_USER_NAME_VALUE,

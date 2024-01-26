@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
     public List<NotificationsController.MessageNotification>
             getNotifications(String userRef) throws Exception {
         List<NotificationUser> userNotifications
-                = notificationUserRepository.findByUserRef(userRef);
+                = notificationUserRepository.findByUserRefAndReadFalse(userRef);
         List<NotificationsController.MessageNotification> notifications = new ArrayList<>();
 
         for (NotificationUser notificationUser : userNotifications) {

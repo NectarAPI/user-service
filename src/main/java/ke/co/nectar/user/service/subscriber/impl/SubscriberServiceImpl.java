@@ -3,11 +3,9 @@ package ke.co.nectar.user.service.subscriber.impl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ke.co.nectar.user.constant.StringConstants;
 import ke.co.nectar.user.entity.Subscriber;
-import ke.co.nectar.user.entity.SubscriberUtility;
 import ke.co.nectar.user.entity.Utility;
 import ke.co.nectar.user.repository.SubscriberMetersRepository;
 import ke.co.nectar.user.repository.SubscriberRepository;
-import ke.co.nectar.user.repository.SubscriberUtilityRepository;
 import ke.co.nectar.user.repository.UtilityRepository;
 import ke.co.nectar.user.service.meters.MetersService;
 import ke.co.nectar.user.service.subscriber.SubscriberService;
@@ -42,24 +40,11 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Autowired
     private UtilityRepository utilityRepository;
 
-    @Autowired
-    private SubscriberUtilityRepository subscriberUtilityRepository;
-
     @Override
     public Subscriber add(SubscriberBundle subscriberBundle, String userRef) throws Exception {
         Subscriber subscriber = processSubscriberBundle(new Subscriber(), subscriberBundle);
         if (subscriber.validate()) {
             subscriberRepository.save(subscriber);
-            Utility utility = utilityRepository.findByRef(subscriberBundle.getUtilityRef());
-            if (utility != null) {
-                SubscriberUtility subscriberUtility = new SubscriberUtility();
-                subscriberUtility.setSubscriber(subscriber);
-                subscriberUtility.setUtility(utility);
-                subscriberUtilityRepository.save(subscriberUtility);
-            } else {
-                throw new InvalidUtilityRefException(StringConstants.INVALID_UTILITY_REF);
-            }
-
             return subscriber;
         }
         throw new InvalidSubscriberDetailsException(StringConstants.INVALID_SUBSCRIBER_DETAILS);
@@ -86,20 +71,6 @@ public class SubscriberServiceImpl implements SubscriberService {
             return subscriber;
         }
         throw new InvalidSubscriberRefException(String.format(StringConstants.INVALID_SUBSCRIBER_REF_EXCEPTION, ref));
-    }
-
-    @Override
-    public SubscriberUtility findByRefAndUtility(String subscriberRef, String utilityRef) throws Exception {
-        Subscriber subscriber = subscriberRepository.findByRef(subscriberRef);
-        if  (subscriber != null) {
-            Utility utility = utilityRepository.findByRef(utilityRef);
-            if (utility != null) {
-                return subscriberUtilityRepository.findBySubscriberAndUtility(subscriber, utility);
-            }
-            throw new InvalidUtilityRefException(StringConstants.INVALID_UTILITY_REF);
-        }
-        throw new InvalidSubscriberRefException(StringConstants.INVALID_SUBSCRIBER_REF_EXCEPTION);
-
     }
 
     @Override
@@ -149,17 +120,12 @@ public class SubscriberServiceImpl implements SubscriberService {
         @JsonProperty("phone_no")
         private String phoneNo;
 
-        @JsonProperty("utility")
-        private String utilityRef;
-
         public SubscriberBundle() {}
 
-        public SubscriberBundle(String name, String phoneNo,
-                                boolean activated, String utilityRef) {
+        public SubscriberBundle(String name, String phoneNo, boolean activated) {
             setName(name);
             setPhoneNo(phoneNo);
             setActivated(activated);
-            setUtilityRef(utilityRef);
         }
 
         public String getName() {
@@ -186,12 +152,5 @@ public class SubscriberServiceImpl implements SubscriberService {
             this.activated = activated;
         }
 
-        public String getUtilityRef() {
-            return utilityRef;
-        }
-
-        public void setUtilityRef(String utilityRef) {
-            this.utilityRef = utilityRef;
-        }
     }
 }

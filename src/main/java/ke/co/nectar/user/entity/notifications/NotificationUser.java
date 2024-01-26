@@ -38,6 +38,11 @@ public class NotificationUser {
         setReadDate(readDate);
     }
 
+    @Override
+    public String toString() {
+        return String.format("id: %d", id);
+    }
+
     public Long getId() {
         return id;
     }

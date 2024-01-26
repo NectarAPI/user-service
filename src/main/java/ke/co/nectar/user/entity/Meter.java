@@ -22,6 +22,7 @@ public class Meter {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_id")
+    @JsonProperty("meter_type")
     private MeterType meterType;
 
     @OneToOne
@@ -59,6 +60,11 @@ public class Meter {
         setSubscriber(subscriber);
         setCreatedAt(createdAt);
         setUpdatedAt(updatedAt);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
     }
 
     public Long getId() {
@@ -129,5 +135,4 @@ public class Meter {
         int noLen = no.signum() == 0 ? 1 : no.precision() - no.scale();
         return (noLen == 11 || noLen == 13);
     }
-
 }

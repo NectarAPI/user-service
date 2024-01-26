@@ -29,6 +29,11 @@ public class Permissions extends DateAudit {
         setNotes(notes);
     }
 
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
+    }
+
     public Long getId() {
         return id;
     }

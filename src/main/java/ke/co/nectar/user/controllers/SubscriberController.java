@@ -3,7 +3,6 @@ package ke.co.nectar.user.controllers;
 import ke.co.nectar.user.annotation.Notify;
 import ke.co.nectar.user.constant.StringConstants;
 import ke.co.nectar.user.entity.Subscriber;
-import ke.co.nectar.user.entity.SubscriberUtility;
 import ke.co.nectar.user.response.ApiResponse;
 import ke.co.nectar.user.service.subscriber.SubscriberService;
 import ke.co.nectar.user.service.subscriber.impl.SubscriberServiceImpl;
@@ -39,33 +38,6 @@ public class SubscriberController {
                 apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
                         StringConstants.EMPTY_REF_VALUE,
                         requestId);
-            }
-        } catch (Exception e) {
-            apiResponse = new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
-                    e.getMessage(),
-                    requestId);
-        }
-        return apiResponse;
-    }
-
-    @GetMapping(path = "/subscriber", params = {"subscriber_ref, utility_ref"})
-    public ApiResponse findSubscriberByRefAndUtility(@RequestParam(value = "request_id") @NotNull String requestId,
-                                                     @RequestParam(value = "subscriber_ref") @NotNull String subscriberRef,
-                                                     @RequestParam(value = "utility_ref") @NotNull String utilityRef) {
-        ApiResponse apiResponse;
-        try {
-            if (subscriberRef != null && !subscriberRef.isBlank()) {
-                SubscriberUtility subscriber = subscriberService.findByRefAndUtility(subscriberRef, utilityRef);
-                Map<String, Object> output = new LinkedHashMap<>();
-                output.put("subscriber_utility", subscriber);
-                apiResponse =  new ApiResponse(StringConstants.SUCCESS_CODE,
-                                                StringConstants.SUCCESS_SUBSCRIBER_DETAILS,
-                                                requestId,
-                                                output);
-            } else {
-                apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
-                                                StringConstants.EMPTY_REF_VALUE,
-                                                requestId);
             }
         } catch (Exception e) {
             apiResponse = new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
@@ -121,7 +93,7 @@ public class SubscriberController {
     @PutMapping(value = "/subscriber/{subscriber_ref}", params = "user_ref")
     @Notify(category = "ACTIVATE_SUBSCRIBER",
             description = "Activate subscriber {subscriberRef} [Request-ID: {requestId}]")
-    public ApiResponse activateUtility(@RequestParam(value = "request_id") @NotNull String requestId,
+    public ApiResponse activateSubscriber(@RequestParam(value = "request_id") @NotNull String requestId,
                                        @RequestParam(value = "user_ref") @NotNull String userRef,
                                        @PathVariable(value = "subscriber_ref") @NotNull String subscriberRef) {
         ApiResponse apiResponse;
@@ -153,7 +125,7 @@ public class SubscriberController {
     @DeleteMapping(value = "/subscriber/{subscriber_ref}", params = "user_ref")
     @Notify(category = "DEACTIVATE_SUBSCRIBER",
             description = "Deactivate subscriber {subscriberRef} [Request-ID: {requestId}]")
-    public ApiResponse deactivateUtility(@RequestParam(value = "request_id") @NotNull String requestId,
+    public ApiResponse deactivateSubscriber(@RequestParam(value = "request_id") @NotNull String requestId,
                                          @RequestParam(value = "user_ref") @NotNull String userRef,
                                          @PathVariable(value = "subscriber_ref") @NotNull String subscriberRef) {
         ApiResponse apiResponse;

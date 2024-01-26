@@ -50,7 +50,6 @@ public class MetersServiceImpl implements MetersService {
         Meter meter = processMeterBundle(new Meter(), meterBundle);
         CompositeMeterBundle compositeMeterBundle = new CompositeMeterBundle();
         if (meter.validate()) {
-
             if (meterRepository.existsByNo(meter.getNo())) {
                 throw new MeterExistsException(StringConstants.METER_ALREADY_EXISTS);
             } else {

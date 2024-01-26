@@ -67,6 +67,11 @@ public class Credentials extends DateAudit {
         setPermissions(permissions);
     }
 
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
+    }
+
     public Long getId() {
         return id;
     }

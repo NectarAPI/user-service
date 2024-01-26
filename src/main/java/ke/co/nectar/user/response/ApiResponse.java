@@ -1,6 +1,7 @@
 package ke.co.nectar.user.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -38,6 +39,12 @@ public class ApiResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Status: %s, data: %s",
+                status, new JSONObject(data).toString());
+    }
+
     private Status createStatus(int code, String message, String requestId) {
         return new Status(code, message, requestId);
     }
@@ -51,6 +58,12 @@ public class ApiResponse {
             setCode(code);
             setMessage(message);
             setRequestId(requestId);
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Code: %d, Message: %s, RequestID: %s",
+                    code, message, requestId);
         }
 
         public int getCode() {

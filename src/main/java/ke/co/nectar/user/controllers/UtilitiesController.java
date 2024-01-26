@@ -49,32 +49,6 @@ public class UtilitiesController {
         return apiResponse;
     }
 
-    @GetMapping(path = "/utility/{utility_ref}/subscriber")
-    public ApiResponse getSubscribersForUtility(@RequestParam(value = "request_id") @NotNull String requestId,
-                                                @PathVariable(value = "utility_ref") @NotNull String utilityRef) {
-        ApiResponse apiResponse;
-        try {
-            if (utilityRef != null && !utilityRef.isBlank()) {
-                List<Subscriber> utilitySubscribers = utilityService.getSubscribers(utilityRef);
-                Map<String, Object>  output = new LinkedHashMap<>();
-                output.put("subscribers", utilitySubscribers);
-                apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
-                                                StringConstants.SUCCESS_SUBSCRIBERS_DETAILS,
-                                                requestId,
-                                                output);
-            } else {
-                apiResponse = new ApiResponse(StringConstants.SUCCESS_CODE,
-                                                StringConstants.INVALID_USER_REF,
-                                                requestId);
-            }
-        } catch (Exception e) {
-            apiResponse = new ApiResponse(StringConstants.INTERNAL_SERVER_ERROR,
-                    e.getMessage(),
-                    requestId);
-        }
-        return apiResponse;
-    }
-
     @GetMapping(path = "/utility/{utility_ref}/meter")
     public ApiResponse getMetersForUtility(@RequestParam(value = "request_id") @NotNull String requestId,
                                            @PathVariable(value = "utility_ref") @NotNull String utilityRef) {
@@ -104,9 +78,9 @@ public class UtilitiesController {
     @PostMapping("/utility")
     @Notify(category = "CREATE_UTILITY",
             description = "Created new utility [Request-ID: {requestId}]")
-    public ApiResponse addUtility(@RequestParam(value = "request_id") @NotNull String requestId,
-                                  @RequestParam(value = "user_ref") @NotNull String userRef,
-                                  @NotNull @RequestBody Utility utility) {
+    public ApiResponse createUtility(@RequestParam(value = "request_id") @NotNull String requestId,
+                                      @RequestParam(value = "user_ref") @NotNull String userRef,
+                                      @NotNull @RequestBody Utility utility) {
         try {
             Utility addedUtility = utilityService.add(utility, userRef);
             Map<String, Object> output = new LinkedHashMap<>();
@@ -122,13 +96,13 @@ public class UtilitiesController {
         }
     }
 
-    @PutMapping(path = "/utility", params = "ref")
+    @PutMapping(path = "/utility", params = { "user_ref", "utility_ref" })
     @Notify(category = "UPDATE_UTILITY",
             description = "Updated utility {utilityRef} [Request-ID: {requestId}]")
     public ApiResponse updateUtility(@RequestParam(value = "request_id") @NotNull String requestId,
                                      @RequestParam(value = "user_ref") @NotNull String userRef,
-                                     @RequestParam(value = "ref") @NotNull String utilityRef,
-                                     @Valid @RequestBody @NotNull Utility utility) {
+                                     @RequestParam(value = "utility_ref") @NotNull String utilityRef,
+                                     @RequestBody @NotNull Utility utility) {
         try {
             Utility obtainedUtility = utilityService.update(utility, utilityRef);
             Map<String, Object>  output = new LinkedHashMap<>();
@@ -144,12 +118,12 @@ public class UtilitiesController {
         }
     }
 
-    @PutMapping(value = "/utility/{ref}", params = "user_ref")
+    @PutMapping(value = "/utility/{utility_ref}", params = { "user_ref" })
     @Notify(category = "ACTIVATE_UTILITY",
             description = "Activate utility {utilityRef} [Request-ID: {requestId}]")
     public ApiResponse activateUtility(@RequestParam(value = "request_id") @NotNull String requestId,
                                          @RequestParam(value = "user_ref") @NotNull String userRef,
-                                         @PathVariable(value = "ref") @NotNull String utilityRef) {
+                                         @PathVariable(value = "utility_ref") @NotNull String utilityRef) {
         ApiResponse apiResponse;
         try {
             if (utilityRef != null && !utilityRef.isBlank()) {

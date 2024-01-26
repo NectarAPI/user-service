@@ -47,6 +47,11 @@ public class UserUtility extends DateAudit {
         setUpdatedAt(updatedAt);
     }
 
+    @Override
+    public String toString() {
+        return String.format("ref: %s", ref);
+    }
+
     public User getUser() {
         return user;
     }

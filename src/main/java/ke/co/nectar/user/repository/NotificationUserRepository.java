@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface NotificationUserRepository extends JpaRepository<NotificationUser, Long> {
 
-    List<NotificationUser> findByUserRef(String userRef);
+    List<NotificationUser> findByUserRefAndReadFalse(String userRef);
 
     @Transactional
     @Modifying(clearAutomatically = true)
