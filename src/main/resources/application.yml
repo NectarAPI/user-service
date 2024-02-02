@@ -6,9 +6,9 @@ spring:
   datasource:
     initialization-mode: always
     platform: postgres
-    url: jdbc:postgresql://127.0.0.1:5432/user_service
-    username: postgres
-    password: password
+    url: jdbc:postgresql://${USER_SERVICE_DB_HOST:localhost:5432}/${USER_SERVICE_DB:user_service}
+    username: ${USER_SERVICE_DB_USERNAME:user_service}
+    password: ${USER_SERVICE_DB_PASSWORD:password}
   jpa:
     show_sql: true
     properties:
